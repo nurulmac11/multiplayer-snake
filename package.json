@@ -1,0 +1,27 @@
+{
+  "homepage": "http://nmacun.com/games",
+  "name": "redux-project",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "immutability-helper": "^2.6.6",
+    "jquery": "^3.3.1",
+    "konva": "^2.0.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-google-maps": "^9.4.5",
+    "react-konva": "^1.7.1",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "redux": "^3.7.2",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
