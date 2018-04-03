@@ -52,10 +52,11 @@ class ColoredRect extends Component {
         this.state = {
             color: 'pink',
             apple: apple,
+            me:    person,
             people: {[this.mynameis]:person}
         };
 
-      this.socket = openSocket('http://192.168.1.5:8000/');
+      this.socket = openSocket('http://localhost:8000');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -90,53 +91,39 @@ class ColoredRect extends Component {
     }
 
     keyPress(event) {
-        let people = {...this.state.people}
+        let people = {...this.state.me}
         if(event.key==="ArrowLeft"){
-            people[this.mynameis].rx = -1;
-            people[this.mynameis].ry =  0;
-            this.setState({
-                people
-            })
+            people.rx = -1;
+            people.ry =  0;
         }
         if(event.key==="ArrowRight"){
-            people[this.mynameis].rx = 1;
-            people[this.mynameis].ry =  0;
-            this.setState({
-                people
-            })
+            people.rx = 1;
+            people.ry =  0;
         }
         if(event.key==="ArrowDown"){
-            people[this.mynameis].rx = 0;
-            people[this.mynameis].ry = 1;
-            this.setState({
-                people
-            })
+            people.rx = 0;
+            people.ry = 1;
         }
         if(event.key==="ArrowUp"){
-            people[this.mynameis].rx = 0;
-            people[this.mynameis].ry = -1;
-            this.setState({
-                people
-            })
+            people.rx = 0;
+            people.ry = -1;
         }
-        let x = people[this.mynameis].x
-        let y = people[this.mynameis].y
-        let score = people[this.mynameis].score
-        let rx = people[this.mynameis].rx;
-        let ry = people[this.mynameis].ry;
-        this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry,score:score});
+        this.setState({
+          me: people
+        })
+        // this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry,score:score});
     }
     game() {
-        let people = {...this.state.people}
+        let people = {...this.state.me}
         let speed = 7
-        let x = people[this.mynameis].x+people[this.mynameis].rx* speed
-        let y = people[this.mynameis].y+people[this.mynameis].ry * speed
-        let rx = people[this.mynameis].rx;
-        let ry = people[this.mynameis].ry;
-        let score = people[this.mynameis].score;
+        let x =  people.x+people.rx* speed
+        let y =  people.y+people.ry * speed
+        let rx = people.rx;
+        let ry = people.ry;
+        let score = people.score;
 
         if(x < 0 ) x = 500
-        if(x > 500 ) x = 0
+        if(x > 501 ) x = 0
         if(y < 0 ) y = 500
         if(y > 500 ) y = 0
 
@@ -150,21 +137,11 @@ class ColoredRect extends Component {
             this.socket.emit('Ieat', apple);
         }
         
-        people[this.mynameis].x = x;
-        people[this.mynameis].y = y;
-        
-        this.setState(prevState => ({
-            people: {
-                ...prevState.people,
-                [this.mynameis] : {
-                        ...prevState.people[this.mynameis],
-                        x:x,
-                        y:y,
-                        score:score
-                    }
-                }
-                })
-        )
+        people.x = x;
+        people.y = y;
+             this.setState({
+        me: people
+          })
         this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
     }
 
@@ -181,7 +158,21 @@ class ColoredRect extends Component {
                     height={500}
                     fill={this.state.color} 
               />
-              {Object.keys(this.state.people).map((item, i) => (
+                        <Text 
+                            text={this.mynameis} 
+                            x={this.state.me.x}
+                            y={this.state.me.y+10}
+                            />
+                        <Rect
+                            x={this.state.me.x}
+                            y={this.state.me.y}
+                            width={10}
+                            height={10}
+                            fill="blue"
+                        />
+              {Object.keys(this.state.people).map((item, i) => 
+                {
+                  return this.state.people[item].name !== this.mynameis ?
                     <React.Fragment>
                         <Text 
                             text={this.state.people[item].name} 
@@ -196,7 +187,10 @@ class ColoredRect extends Component {
                             fill="blue"
                         />
                     </React.Fragment>
-                    ))}
+                    : null
+                     }
+                )
+              }
 
               <Rect
                     x={this.state.apple.ax}
