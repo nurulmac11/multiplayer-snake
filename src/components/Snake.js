@@ -75,14 +75,6 @@ class ColoredRect extends Component {
         });
     }
 
-    makeid() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < 5; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        return text;
-    }
-
     subscribeToTimer(cb) {
       this.socket.on(this.mynameis, timestamp => cb(null, timestamp));
       this.socket.emit('subscribeToTimer', this.mynameis);
