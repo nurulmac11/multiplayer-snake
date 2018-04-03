@@ -1,6 +1,45 @@
 import React, { Component } from 'react';
-import { Stage, Layer, Rect } from 'react-konva';
+import { Stage, Layer, Rect, Text } from 'react-konva';
 import openSocket from 'socket.io-client';
+import '../App.css';
+
+class Rtext extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            name:this.props.name, 
+            score:this.props.score,
+            class: "",
+        }
+        this.gotit = 0
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const newer = nextProps
+        if(this.state.score !== nextProps.score){
+                var kl = this.state.name
+                setTimeout(function() {
+                    document.getElementById(kl).classList.add('animator');
+                }, 100)
+                
+                setTimeout(function() {
+                    document.getElementById(kl).classList.remove('animator');
+                }, 2000)
+
+        }
+        this.setState({
+            name:newer.name, 
+            score:newer.score, 
+        })
+  }
+  render() {
+    return (
+        <li id={this.state.name} className={this.state.class}>
+            {this.state.name} - {this.state.score}
+        </li>
+    );
+  }
+}
 
 class ColoredRect extends Component {
 
@@ -16,7 +55,7 @@ class ColoredRect extends Component {
             people: {[this.mynameis]:person}
         };
 
-      this.socket = openSocket('http://144.122.106.83/');
+      this.socket = openSocket('http://192.168.1.5:8000/');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -54,7 +93,7 @@ class ColoredRect extends Component {
     }
  
     componentDidMount() {
-        setInterval(this.game.bind(this), 1000/15)
+        setInterval(this.game.bind(this), 1000/10)
         document.addEventListener('keydown',this.keyPress.bind(this));
     }
 
@@ -150,16 +189,21 @@ class ColoredRect extends Component {
                     height={500}
                     fill={this.state.color} 
               />
-
               {Object.keys(this.state.people).map((item, i) => (
+                    <React.Fragment>
+                        <Text 
+                            text={this.state.people[item].name} 
+                            x={this.state.people[item].x}
+                            y={this.state.people[item].y+10}
+                            />
                         <Rect
                             x={this.state.people[item].x}
                             y={this.state.people[item].y}
-                            key = {this.state.people[item].name}
                             width={10}
                             height={10}
                             fill="blue"
                         />
+                    </React.Fragment>
                     ))}
 
               <Rect
@@ -176,7 +220,8 @@ class ColoredRect extends Component {
                 <h1> Score Table </h1>
                 <ul>
               {Object.keys(this.state.people).map((item, i) => (
-                    <li>{this.state.people[item].name} - {this.state.people[item].score}</li>
+                    <Rtext name={this.state.people[item].name}
+                    score={this.state.people[item].score} /> 
                     ))}
                 </ul>
             </div>
