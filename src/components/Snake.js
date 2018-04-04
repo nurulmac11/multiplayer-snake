@@ -82,10 +82,6 @@ class ColoredRect extends Component {
                      apple: msg
                 })  
         });
-    window.addEventListener("beforeunload", (ev) => 
-        {  
-          this.socket.emit('leave', this.mynameis);
-        });
     }
 
     subscribeToTimer(cb) {
