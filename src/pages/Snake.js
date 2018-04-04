@@ -123,8 +123,32 @@ class ColoredRect extends Component {
         this.setState({
           me: people
         })
-        // this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry,score:score});
+        let me = {...this.state.me}
+        this.socket.emit('move', {id:1, name:this.mynameis, x:me.x, y:me.y, rx:me.rx, ry:me.ry,score:me.score});
     }
+
+    otherGames() {
+        Object.keys(this.state.people).map((item, i) => {
+            let people = {...this.state.people}
+            let speed = 7
+            let x =  people[item].x+people[item].rx* speed
+            let y =  people[item].y+people[item].ry * speed
+
+            if(x < 0 ) x = 500
+            if(x > 501 ) x = 0
+            if(y < 0 ) y = 500
+            if(y > 500 ) y = 0
+            
+            people[item].x = x;
+            people[item].y = y;
+            this.setState({
+                people: people
+            })
+            return true;
+        })
+
+    }
+
     game() {
         let people = {...this.state.me}
         let speed = 7
@@ -148,14 +172,16 @@ class ColoredRect extends Component {
                 apple: apple
             })
             this.socket.emit('Ieat', apple);
+            this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
         }
         
         people.x = x;
         people.y = y;
-             this.setState({
-        me: people
-          })
-        this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
+        this.setState({
+            me: people
+        })
+        // this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
+        this.otherGames();
     }
 
     render() {

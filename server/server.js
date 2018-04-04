@@ -17,6 +17,7 @@ io.on('connection', (client) => {
       }
       client.emit(nick,people);
       client.emit('apple',apple);
+      io.sockets.emit('moved', people);
   });
 
   client.on('Ieat', function(msg){
