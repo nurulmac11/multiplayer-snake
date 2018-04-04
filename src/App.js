@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Mario from './components/Mario';
-import Snake from './components/Snake';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import Snake from './pages/Snake';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css';
 
 
@@ -11,18 +10,13 @@ class App extends Component {
         <Router basename={'/games'}>
         <div className="container">
         <div className="App row">
-        <ul>
+        {/*<ul>
         <li>
           <Link to="/">Snake</Link>
         </li>
-        <li>
-          <Link to="/mario">Mario</Link>
-        </li>
-      </ul>
+      </ul>*/}
       <hr />
       <Route exact path="/" component={Snake} />
-      <Route path="/mario" component={Mario} />
-
         </div>
         </div>
         </Router>

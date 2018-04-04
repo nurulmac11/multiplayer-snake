@@ -49,10 +49,14 @@ class ColoredRect extends Component {
         super()
         while(1){
         var personname = prompt("Please enter your name:", "");
+          try{
         if (personname.match(/^[0-9a-z]+$/))
           break;
         else
           alert("inappropriate name");
+          } catch(e) {
+          console.log("no")
+          }
         }
         this.mynameis = personname;
         let person = {id:1, name:this.mynameis, x:0, y:0, rx:0, ry:0, score:0}
@@ -64,7 +68,7 @@ class ColoredRect extends Component {
             people: {[this.mynameis]:person}
         };
 
-      this.socket = openSocket('');
+      this.socket = openSocket('130.211.84.185:8000');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -138,7 +142,7 @@ class ColoredRect extends Component {
         if(x-5 < this.state.apple.ax && this.state.apple.ax < x+5 
             && this.state.apple.ay-5 < y  && y < this.state.apple.ay+5) {
             score = score + 1
-	   people.score = score
+       people.score = score
             let apple = {ax:this.getRandomInt(0,500),ay:this.getRandomInt(0,500)}
             this.setState({
                 apple: apple
@@ -155,6 +159,8 @@ class ColoredRect extends Component {
     }
 
     render() {
+      const image = new window.Image();
+      image.src = "https://cdn.tutsplus.com/mobile/uploads/legacy/Corona-SDK_Build-A-Snake-Game/1/6.png"
         return (
             <React.Fragment>
             <div className="col">
@@ -165,7 +171,7 @@ class ColoredRect extends Component {
                     y={0}
                     width={500}
                     height={500}
-                    fill={this.state.color} 
+                    fillPatternImage={image}
               />
                         <Text 
                             text={this.mynameis} 
