@@ -65,10 +65,11 @@ class ColoredRect extends Component {
             color: 'pink',
             apple: apple,
             me:    person,
-            people: {[this.mynameis]:person}
+            people: {[this.mynameis]:person},
+            serverRule: 0
         };
 
-      this.socket = openSocket('130.211.84.185:8000');
+      this.socket = openSocket('localhost:8000');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -78,8 +79,9 @@ class ColoredRect extends Component {
         );
         this.socket.on('moved', msg => {
               this.setState({
-                     people: msg
-                })  
+                     people: msg,
+                     serverRule: 1
+                })
         });
         this.socket.on('apple', msg => {
               this.setState({
@@ -180,8 +182,13 @@ class ColoredRect extends Component {
         this.setState({
             me: people
         })
-        // this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
-        this.otherGames();
+        this.socket.emit('dontforgetme', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
+        if(!this.state.serverRule)
+            this.otherGames();
+        else
+            this.setState({
+                serverRule: 0
+            })
     }
 
     render() {

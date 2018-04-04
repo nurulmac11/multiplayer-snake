@@ -30,6 +30,10 @@ io.on('connection', (client) => {
     io.sockets.emit('moved', people);
   });
 
+  client.on('dontforgetme', function (msg) {
+    people[msg.name] = msg;
+  });
+
   client.on('disconnect', function(msg){
     Array.prototype.remove = function() {
       var what, a = arguments, L = a.length, ax;
@@ -44,6 +48,7 @@ io.on('connection', (client) => {
     user = idname[client.id];
     names.remove(user);
     delete people[user];
+    io.sockets.emit('moved', people);
   });
 
 });
