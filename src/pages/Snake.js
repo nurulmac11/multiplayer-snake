@@ -120,11 +120,11 @@ class ColoredRect extends Component {
             people.rx = 0;
             people.ry = -1;
         }
+        let me = {...this.state.me}
+        this.socket.emit('move', {id:1, name:this.mynameis, x:me.x, y:me.y, rx:people.rx, ry:people.ry,score:me.score});
         this.setState({
           me: people
         })
-        let me = {...this.state.me}
-        this.socket.emit('move', {id:1, name:this.mynameis, x:me.x, y:me.y, rx:me.rx, ry:me.ry,score:me.score});
     }
 
     otherGames() {
@@ -166,13 +166,13 @@ class ColoredRect extends Component {
         if(x-5 < this.state.apple.ax && this.state.apple.ax < x+5 
             && this.state.apple.ay-5 < y  && y < this.state.apple.ay+5) {
             score = score + 1
-       people.score = score
+            people.score = score
             let apple = {ax:this.getRandomInt(0,500),ay:this.getRandomInt(0,500)}
+            this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
+            this.socket.emit('Ieat', apple);
             this.setState({
                 apple: apple
             })
-            this.socket.emit('Ieat', apple);
-            this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
         }
         
         people.x = x;
