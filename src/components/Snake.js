@@ -19,11 +19,13 @@ class Rtext extends Component {
         if(this.state.score !== nextProps.score){
                 var kl = this.state.name
                 setTimeout(function() {
-                    document.getElementById(kl).classList.add('animator');
+                  try{
+                    document.getElementById(kl).classList.add('animator'); } catch(err) { console.log(err)};
                 }, 100)
                 
                 setTimeout(function() {
-                    document.getElementById(kl).classList.remove('animator');
+                  try {
+                    document.getElementById(kl).classList.remove('animator');}catch(err) {console.log(err)};
                 }, 2000)
 
         }
@@ -45,7 +47,13 @@ class ColoredRect extends Component {
 
     constructor() {
         super()
+        while(1){
         var personname = prompt("Please enter your name:", "");
+        if (personname.match(/^[0-9a-z]+$/))
+          break;
+        else
+          alert("inappropriate name");
+        }
         this.mynameis = personname;
         let person = {id:1, name:this.mynameis, x:0, y:0, rx:0, ry:0, score:0}
         let apple = {ax:50, ay:50}
@@ -56,7 +64,7 @@ class ColoredRect extends Component {
             people: {[this.mynameis]:person}
         };
 
-      this.socket = openSocket('http://localhost:8000');
+      this.socket = openSocket('');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -74,6 +82,10 @@ class ColoredRect extends Component {
                      apple: msg
                 })  
         });
+    window.addEventListener("beforeunload", (ev) => 
+        {  
+          this.socket.emit('leave', this.mynameis);
+        });
     }
 
     subscribeToTimer(cb) {
@@ -86,7 +98,7 @@ class ColoredRect extends Component {
     }
  
     componentDidMount() {
-        setInterval(this.game.bind(this), 1000/10)
+        setInterval(this.game.bind(this), 1000/8)
         document.addEventListener('keydown',this.keyPress.bind(this));
     }
 
@@ -130,6 +142,7 @@ class ColoredRect extends Component {
         if(x-5 < this.state.apple.ax && this.state.apple.ax < x+5 
             && this.state.apple.ay-5 < y  && y < this.state.apple.ay+5) {
             score = score + 1
+	   people.score = score
             let apple = {ax:this.getRandomInt(0,500),ay:this.getRandomInt(0,500)}
             this.setState({
                 apple: apple
