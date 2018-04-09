@@ -69,7 +69,7 @@ class ColoredRect extends Component {
             serverRule: 0
         };
 
-      this.socket = openSocket('localhost:8000');
+      this.socket = openSocket('130.211.84.185:8000');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
