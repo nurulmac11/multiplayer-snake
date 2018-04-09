@@ -7,14 +7,9 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-        <Router basename={'/games'}>
+        <Router>
         <div className="container">
         <div className="App row">
-        {/*<ul>
-        <li>
-          <Link to="/">Snake</Link>
-        </li>
-      </ul>*/}
       <hr />
       <Route exact path="/" component={Snake} />
         </div>
