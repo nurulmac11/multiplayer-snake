@@ -1,6 +1,6 @@
 # Multiplayer Snake Game
 
-Multiplayer snake game powered by React.js and websockt technologies.
+Multiplayer snake game powered by React.js and websocket technologies.
 
 # Installation
 
@@ -9,6 +9,6 @@ Multiplayer snake game powered by React.js and websockt technologies.
     $ npm install
     ...
     # Enter your server address in this line => this.socket = openSocket('')
-    # (src/pages/Snake.js)
+    $ vi src/pages/Snake.js
     $ node server/server.js
     $ npm start
