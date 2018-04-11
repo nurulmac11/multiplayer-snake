@@ -69,7 +69,7 @@ class ColoredRect extends Component {
             serverRule: 0
         };
 
-      this.socket = openSocket('localhost:8000');
+      this.socket = openSocket('130.211.84.185:8000');
         this.subscribeToTimer(
             (err, timestamp) => {
                 this.setState({
@@ -182,7 +182,7 @@ class ColoredRect extends Component {
         this.setState({
             me: people
         })
-        this.socket.emit('dontforgetme', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
+        this.socket.emit('move', {id:1, name:this.mynameis, x:x, y:y, rx:rx, ry:ry, score:score});
         if(!this.state.serverRule)
             this.otherGames();
         else
