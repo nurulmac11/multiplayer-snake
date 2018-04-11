@@ -68,10 +68,11 @@ class Snake extends Component {
             apple: apple,
             me:    person,
             people: {[this.mynameis]:person},
+            serverStatus: "offline",
             serverRule: 0
         }
 
-        this.socket = openSocket('')
+        this.socket = openSocket('ip:8000')
         
         this.subscribeToTimer(
             (err, timestamp) => {
@@ -157,6 +158,15 @@ class Snake extends Component {
     }
 
     game() {
+        if(this.socket.connected){
+          this.setState({
+            serverStatus: <p className="text-success">ONLINE</p>
+          })
+        } else {
+          this.setState({
+            serverStatus: <p className="text-danger">OFFLINE</p>
+          })
+        }
         let people = {...this.state.me}
         let speed = 7
         let x =  people.x+people.rx* speed
@@ -233,6 +243,7 @@ class Snake extends Component {
                             score={this.state.people[item].score} /> 
                     ))}
                 </ul>
+                <p>Server status: {this.state.serverStatus}</p>
             </div>
       </React.Fragment>
         )
