@@ -1,6 +1,7 @@
 # Multiplayer Snake Game
 
 Multiplayer snake game powered by React.js and websocket technologies.
+There can be several bad practices, semantic errors. I am still trying to figure out websockets.
 
 # Installation
 
